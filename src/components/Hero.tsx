@@ -466,8 +466,8 @@ export default function Hero() {
         </a>
 
         <a
-          href="/Shanzay_Hussain_CV.pdf"
-          download="Shanzay_Hussain_Resume.pdf"
+          href="/ShanzayHussain_Resume.pdf"
+          download="ShanzayHussain_Resume.pdf"
           className="rounded-full border border-cyan/40 px-6 py-2.5 text-sm font-medium text-cyan transition-colors hover:bg-cyan/10"
         >
           Download résumé
