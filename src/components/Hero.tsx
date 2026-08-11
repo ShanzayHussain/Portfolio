@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import avatarNormal from "../assets/avatar-normal.png";
@@ -5,12 +6,9 @@ import avatarSkeleton from "../assets/avatar-skeleton.png";
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-// Hero: avatar in the middle, "Shanzay" left / "Hussain" right.
-// Moving the cursor over the avatar peels back the normal face and
-// reveals the skeleton layer underneath via a soft, wobbling mask
-// driven entirely through refs + CSS vars (no per-frame re-renders).
 export default function Hero() {
   const stageRef = useRef<HTMLDivElement>(null);
+  const avatarBoxRef = useRef<HTMLDivElement>(null);
   const maskRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const [reduced, setReduced] = useState(false);
@@ -26,9 +24,10 @@ export default function Hero() {
   useEffect(() => {
     if (reduced) return;
     const stage = stageRef.current;
+    const avatarBox = avatarBoxRef.current;
     const mask = maskRef.current;
     const card = cardRef.current;
-    if (!stage || !mask) return;
+    if (!stage || !avatarBox || !mask) return;
 
     let target = { x: 50, y: 45 };
     let current = { x: 50, y: 120 };
@@ -37,10 +36,13 @@ export default function Hero() {
     let raf = 0;
     let t = 0;
     let intro = true;
+    let dragging = false;
 
     const introStart = performance.now() + 600;
 
-    const onMove = (e: PointerEvent) => {
+    // Mouse: track anywhere over the whole stage (desktop hover behavior)
+    const onMouseMove = (e: PointerEvent) => {
+      if (e.pointerType === "touch") return; // touch handled separately below
       intro = false;
       const r = stage.getBoundingClientRect();
       target = {
@@ -49,15 +51,39 @@ export default function Hero() {
       };
       targetRadius = 34;
     };
-    const onLeave = () => {
+    const onMouseLeave = () => {
+      targetRadius = 0;
+    };
+
+    // Touch: only reveal while the finger is actively dragging on the avatar
+    const updateFromTouch = (touch: Touch) => {
+      const r = avatarBox.getBoundingClientRect();
+      const x = ((touch.clientX - r.left) / r.width) * 100;
+      const y = ((touch.clientY - r.top) / r.height) * 100;
+      target = { x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) };
+      targetRadius = 34;
+    };
+
+    const onTouchStart = (e: TouchEvent) => {
+      intro = false;
+      dragging = true;
+      updateFromTouch(e.touches[0]);
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!dragging) return;
+      e.preventDefault(); // stop page scroll while sliding on the avatar
+      updateFromTouch(e.touches[0]);
+    };
+    const onTouchEnd = () => {
+      dragging = false;
       targetRadius = 0;
     };
 
     const tick = (now: number) => {
       t += 0.016;
 
-      // Auto-sweep intro so the reveal moment plays once on load,
-      // and doubles as the touch-device fallback (no pointermove there).
+      // One-time auto-sweep on load so the effect is discoverable,
+      // stops as soon as the user interacts.
       if (intro) {
         const p = Math.min(Math.max((now - introStart) / 2400, 0), 1);
         target = { x: 8 + p * 84, y: 42 + Math.sin(p * Math.PI * 2) * 12 };
@@ -84,19 +110,21 @@ export default function Hero() {
     };
     raf = requestAnimationFrame(tick);
 
-    stage.addEventListener("pointermove", onMove);
-    stage.addEventListener("pointerleave", onLeave);
-    // Touch devices: tap re-triggers the sweep instead of tracking a finger.
-    const onTouchStart = () => {
-      intro = true;
-    };
-    stage.addEventListener("touchstart", onTouchStart, { passive: true });
+    stage.addEventListener("pointermove", onMouseMove);
+    stage.addEventListener("pointerleave", onMouseLeave);
+    avatarBox.addEventListener("touchstart", onTouchStart, { passive: true });
+    avatarBox.addEventListener("touchmove", onTouchMove, { passive: false });
+    avatarBox.addEventListener("touchend", onTouchEnd);
+    avatarBox.addEventListener("touchcancel", onTouchEnd);
 
     return () => {
       cancelAnimationFrame(raf);
-      stage.removeEventListener("pointermove", onMove);
-      stage.removeEventListener("pointerleave", onLeave);
-      stage.removeEventListener("touchstart", onTouchStart);
+      stage.removeEventListener("pointermove", onMouseMove);
+      stage.removeEventListener("pointerleave", onMouseLeave);
+      avatarBox.removeEventListener("touchstart", onTouchStart);
+      avatarBox.removeEventListener("touchmove", onTouchMove);
+      avatarBox.removeEventListener("touchend", onTouchEnd);
+      avatarBox.removeEventListener("touchcancel", onTouchEnd);
     };
   }, [reduced]);
 
@@ -108,26 +136,26 @@ export default function Hero() {
     >
       <div className="pointer-events-none absolute inset-0 opacity-40 [background:radial-gradient(circle_at_50%_20%,rgba(79,217,219,0.10),transparent_60%)]" />
 
-      <div className="flex items-center justify-center gap-4 sm:gap-10 md:gap-16 w-full max-w-6xl">
+      {/* Stack on mobile, side-by-side from sm: up — fixes the name getting cut off */}
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-10 md:gap-16 w-full max-w-6xl">
         <motion.h1
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="font-display font-semibold text-gradient text-[12vw] sm:text-6xl md:text-8xl leading-none tracking-tight"
+          className="font-display font-semibold text-gradient text-[15vw] sm:text-6xl md:text-8xl leading-none tracking-tight"
         >
           Shanzay
         </motion.h1>
 
         <div
-          className="relative w-[46vw] max-w-[340px] sm:max-w-[380px] aspect-[3/4] shrink-0"
-          style={{ perspective: "1200px" }}
+          ref={avatarBoxRef}
+          className="relative w-[70vw] max-w-[300px] sm:w-[46vw] sm:max-w-[340px] md:max-w-[380px] aspect-[3/4] shrink-0"
+          style={{ perspective: "1200px", touchAction: "none" }}
         >
           <div
             ref={cardRef}
             className="relative h-full w-full rounded-2xl overflow-hidden transition-transform duration-300 will-change-transform"
-            // style={{ boxShadow: "0 0 40px rgba(79,217,219,0.12)" }}
-          > 
-            {/* Base layer: skeleton */}
+          >
             <img
               src={avatarNormal}
               alt=""
@@ -135,14 +163,9 @@ export default function Hero() {
               className="absolute inset-0 h-full w-full object-cover object-top"
             />
 
-            {/* Top layer: normal face, masked away near the cursor */}
             <div
               ref={maskRef}
-              className={
-                reduced
-                  ? "absolute inset-0 opacity-100"
-                  : "absolute inset-0"
-              }
+              className={reduced ? "absolute inset-0 opacity-100" : "absolute inset-0"}
               style={
                 reduced
                   ? undefined
@@ -169,10 +192,10 @@ export default function Hero() {
         </div>
 
         <motion.h1
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="font-display font-semibold text-gradient text-[12vw] sm:text-6xl md:text-8xl leading-none tracking-tight"
+          className="font-display font-semibold text-gradient text-[15vw] sm:text-6xl md:text-8xl leading-none tracking-tight"
         >
           Hussain
         </motion.h1>
@@ -186,29 +209,30 @@ export default function Hero() {
       >
         Software Engineering Undergraduate · Full-Stack Developer · AI-Integrated Application Developer
       </motion.p>
-       
-      <motion.div
-  initial={{ opacity: 0, y: 10 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.65, duration: 0.6 }}
-  className="mt-8 flex flex-wrap items-center justify-center gap-4"
->
-  <a
-    href="#projects"
-    className="rounded-full bg-cyan px-6 py-2.5 text-sm font-medium text-ink transition-transform hover:scale-[1.04]"
-  >
-    View projects
-  </a>
 
-  <a
-    href="/Shanzay_Hussain_CV.pdf" 
-    download="Shanzay_Hussain_Resume.pdf" 
-    className="rounded-full border border-cyan/40 px-6 py-2.5 text-sm font-medium text-cyan transition-colors hover:bg-cyan/10"
-  >
-    Download résumé
-  </a>
-</motion.div>
-        <motion.a
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.65, duration: 0.6 }}
+        className="mt-8 flex flex-wrap items-center justify-center gap-4"
+      >
+        <a
+          href="#projects"
+          className="rounded-full bg-cyan px-6 py-2.5 text-sm font-medium text-ink transition-transform hover:scale-[1.04]"
+        >
+          View projects
+        </a> 
+
+        <a
+          href="/Shanzay_Hussain_CV.pdf"
+          download="Shanzay_Hussain_Resume.pdf"
+          className="rounded-full border border-cyan/40 px-6 py-2.5 text-sm font-medium text-cyan transition-colors hover:bg-cyan/10"
+        >
+          Download résumé
+        </a>
+      </motion.div>
+
+      <motion.a
         href="#contact"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -217,7 +241,6 @@ export default function Hero() {
       >
         Scroll ↓
       </motion.a>
-    </section>      
+    </section>
   );
 }
-     

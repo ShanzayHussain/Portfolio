@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 
 const links = [
@@ -30,13 +31,16 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-5 px-4">
-      <nav className="flex items-center gap-1 rounded-full border border-border bg-panel/70 backdrop-blur px-2 py-2">
+    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 sm:pt-5 px-3 sm:px-4">
+      <nav
+        className="flex items-center gap-0.5 sm:gap-1 rounded-full border border-border bg-panel/70 backdrop-blur px-1.5 sm:px-2 py-1.5 sm:py-2 max-w-full overflow-x-auto [&::-webkit-scrollbar]:hidden"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
         {links.map((l) => (
           <a
             key={l.id}
             href={`#${l.id}`}
-            className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-colors ${
+            className={`shrink-0 whitespace-nowrap px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-sm font-medium transition-colors ${
               activeId === l.id
                 ? "bg-cyan/15 text-cyan"
                 : "text-white/60 hover:text-white"
