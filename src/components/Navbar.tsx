@@ -1,0 +1,51 @@
+import { useEffect, useState } from "react";
+
+const links = [
+  { id: "about", label: "About" },
+  { id: "education", label: "Education" },
+  { id: "skills", label: "Skills" },
+  { id: "projects", label: "Projects" },
+  { id: "contact", label: "Contact" },
+];
+
+export default function Navbar() {
+  const [activeId, setActiveId] = useState("about");
+
+  useEffect(() => {
+    const sections = links
+      .map((l) => document.getElementById(l.id))
+      .filter(Boolean) as HTMLElement[];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveId(entry.target.id);
+        });
+      },
+      { rootMargin: "-40% 0px -50% 0px", threshold: 0 }
+    );
+
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-5 px-4">
+      <nav className="flex items-center gap-1 rounded-full border border-border bg-panel/70 backdrop-blur px-2 py-2">
+        {links.map((l) => (
+          <a
+            key={l.id}
+            href={`#${l.id}`}
+            className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-colors ${
+              activeId === l.id
+                ? "bg-cyan/15 text-cyan"
+                : "text-white/60 hover:text-white"
+            }`}
+          >
+            {l.label}
+          </a>
+        ))}
+      </nav>
+    </header>
+  );
+}
