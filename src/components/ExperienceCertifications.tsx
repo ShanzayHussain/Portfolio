@@ -1,74 +1,3 @@
-// import { motion } from "framer-motion";
-
-// export default function ExperienceCertifications() {
-//   return (
-//     <section id="experience" className="max-w-6xl mx-auto px-6 py-20 scroll-mt-24 space-y-16">
-//       <div>
-//         <motion.h2
-//           initial={{ opacity: 0, y: 20 }}
-//           whileInView={{ opacity: 1, y: 0 }}
-//           viewport={{ once: true, margin: "-60px" }}
-//           transition={{ duration: 0.6 }}
-//           className="font-display font-bold text-3xl text-gradient mb-6"
-//         >
-//           Experience
-//         </motion.h2>
-//         <motion.div
-//           initial={{ opacity: 0, y: 20 }}
-//           whileInView={{ opacity: 1, y: 0 }}
-//           viewport={{ once: true, margin: "-60px" }}
-//           transition={{ duration: 0.6, delay: 0.1 }}
-//           className="rounded-2xl border border-border bg-panel/60 p-6 sm:p-8"
-//         >
-//           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-//             <h3 className="font-display font-semibold text-lg text-white">
-//               Backend Intern (Remote) — ITVE Pvt Ltd
-//             </h3>
-//             <span className="text-cyan/80 font-mono text-sm">2 months</span>
-//           </div>
-//           <p className="text-xs text-white/40 mt-1">FastAPI · MongoDB · JWT · Cloudinary</p>
-//           <p className="text-white/60 text-sm mt-3 leading-relaxed">
-//             Contributed to the backend of a FastAPI-based REST API with JWT
-//             authentication, MongoDB (via Motor) for data persistence, and
-//             Cloudinary for image upload handling.
-//           </p>
-//         </motion.div>
-//       </div>
-
-//       <div>
-//         <motion.h2
-//           initial={{ opacity: 0, y: 20 }}
-//           whileInView={{ opacity: 1, y: 0 }}
-//           viewport={{ once: true, margin: "-60px" }}
-//           transition={{ duration: 0.6 }}
-//           className="font-display font-bold text-3xl text-gradient mb-6"
-//         >
-//           Certifications
-//         </motion.h2>
-//         <motion.div
-//           initial={{ opacity: 0, y: 20 }}
-//           whileInView={{ opacity: 1, y: 0 }}
-//           viewport={{ once: true, margin: "-60px" }}
-//           transition={{ duration: 0.6, delay: 0.1 }}
-//           className="rounded-2xl border border-border bg-panel/60 p-6 sm:p-8"
-//         >
-//           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-//             <h3 className="font-display font-semibold text-lg text-white">
-//               Google AI Professional Certificate — Coursera
-//             </h3>
-//             <span className="text-cyan/80 font-mono text-sm">2026</span>
-//           </div>
-//           <p className="text-white/60 text-sm mt-3 leading-relaxed">
-//             Covered foundations of AI/ML, prompt engineering, and responsible
-//             AI practices.
-//           </p>
-//         </motion.div>
-//       </div>
-//     </section>
-//   );
-// }
-
-
 
 import { motion } from "framer-motion";
 import { HiOutlineBriefcase, HiOutlineAcademicCap } from "react-icons/hi";
@@ -81,7 +10,7 @@ const items = [
     title: "Backend Intern (Remote)",
     org: "ITVE Pvt Ltd",
     meta: "FastAPI · MongoDB · JWT · Cloudinary",
-    period: "2 months",
+    period: "June 2026 - Aug 2026",
     description:
       "Contributed to the backend of a FastAPI-based REST API with JWT authentication, MongoDB (via Motor) for data persistence, and Cloudinary for image upload handling.",
   },

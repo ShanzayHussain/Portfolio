@@ -13,7 +13,7 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="space-y-8 text-white/70 text-lg md:text-xl leading-relaxed"
+          className="space-y-8 text-white/70 text-lg md:text-s leading-relaxed"
         > 
           <p>
             I'm <span className="text-white font-medium">Shanzay Hussain</span>,
