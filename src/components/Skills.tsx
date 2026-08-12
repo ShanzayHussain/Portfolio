@@ -10,6 +10,7 @@ import {
 import { TbApi, TbBrandCSharp, TbRobotFace, TbMessageChatbot, TbTrain } from "react-icons/tb";
 import SectionHeading from "./SectionHeading";
 import type { IconType } from "react-icons";
+import { SiN8N, SiDocker } from "react-icons/si"; 
 
 type Skill = { name: string; icon: IconType };
 
@@ -79,6 +80,8 @@ const groups: { title: string; skills: Skill[] }[] = [
       { name: "Postman", icon: SiPostman },
       { name: "Figma", icon: SiFigma },
       { name: "Canva", icon: SiCanvas },
+      { name: "n8n", icon: SiN8N },
+      { name: "Docker", icon: SiDocker },
     ],
   },
 ];
