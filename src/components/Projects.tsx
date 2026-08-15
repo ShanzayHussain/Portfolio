@@ -43,8 +43,8 @@ const projects = [
     description:
       "A full-stack platform that automates tailoring a resume to a specific job description via an n8n-orchestrated workflow — parsing the uploaded resume and JD, extracting key requirements, and generating a tailored, downloadable version. Currently in development.",
     stack: ["React", "TypeScript", "Firebase", "Docker", "n8n", "Express"],
-    demo: "",
-    code: "https://github.com/ShanzayHussain/ResumeForge-AI",
+    demo: "https://resume-forge-ai-five.vercel.app/",
+    code: "https://github.com/ShanzayHussain/ResumeForgeAI",
   },
 ];
 
