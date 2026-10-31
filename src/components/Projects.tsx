@@ -4,6 +4,8 @@ import smartbudget from "../assets/project-smartbudget.png";
 import interviewiq from "../assets/project-interviewiq.png";
 import ragchatbot from "../assets/project-ragchatbot.png";
 import resumeforge from "../assets/project-resumeforge.png";
+import medichain from "../assets/medichain.jpeg";
+import aagahi from "../assets/aagahi.jpeg";
 
 const projects = [
   {
@@ -13,7 +15,7 @@ const projects = [
     description:
       "An end-to-end finance platform pairing budget tracking with ML-based overspending risk prediction, real-time analytics (spend pace, category breakdowns), behavioural insights by mood and weekday, and a context-aware AI assistant on Groq LLaMA 3.3 70B.",
     stack: ["React", "Vite", "TypeScript", "Express", "FastAPI", "scikit-learn", "Firebase", "Chart.js"],
-    demo: "https://smart-budget-gules-ten.vercel.app/",
+    // demo: "https://smart-budget-gules-ten.vercel.app/",
     code: "https://github.com/ShanzayHussain/Smart-Budget",
   },
   {
@@ -23,7 +25,7 @@ const projects = [
     description:
       "A full-stack AI interview platform shipped end-to-end — frontend, backend, and cloud deployment — with a Chart.js analytics dashboard tracking performance trends across sessions and speech recognition for realistic interview simulation.",
     stack: ["React", "Vite", "Express", "Supabase", "Groq AI", "Chart.js"],
-    demo: "https://interview-iq-bay.vercel.app",
+    // demo: "https://interview-iq-bay.vercel.app",
     code: "https://github.com/ShanzayHussain/Interview-IQ",
   },
   {
@@ -33,20 +35,42 @@ const projects = [
     description:
       "A multimodal RAG chatbot with document and image uploads, persistent chat history, ChromaDB vector retrieval with similarity-threshold routing, vision-model image understanding at ingestion, and cross-conversation knowledge base search.",
     stack: ["React", "TypeScript", "FastAPI", "MongoDB Atlas", "ChromaDB", "Firebase Auth", "OpenAI"],
-    demo: "https://rag-intelligence-chatbot-beta.vercel.app",
+    // demo: "https://rag-intelligence-chatbot-beta.vercel.app",
     code: "https://github.com/ShanzayHussain/Rag-Intelligence-Chatbot",
   },
   {
     title: "ResumeForge AI",
-    tag: "AUTOMATED RESUME TAILORING PLATFORM — IN PROGRESS",
+    tag: "AUTOMATED RESUME TAILORING PLATFORM",
     image: resumeforge,
     description:
-      "A full-stack platform that automates tailoring a resume to a specific job description via an n8n-orchestrated workflow — parsing the uploaded resume and JD, extracting key requirements, and generating a tailored, downloadable version. Currently in development.",
+      "A full-stack platform that automates tailoring a resume to a specific job description via an n8n-orchestrated workflow — parsing the uploaded resume and JD, extracting key requirements, and generating a tailored, downloadable version. ",
     stack: ["React", "TypeScript", "Firebase", "Docker", "n8n", "Express"],
-    demo: "https://resume-forge-ai-five.vercel.app/",
+    // demo: "https://resume-forge-ai-five.vercel.app/",
     code: "https://github.com/ShanzayHussain/ResumeForgeAI",
   },
+  {
+    title: "MediChain",
+    tag: "AI & BLOCKCHAIN PHARMACEUTICAL SUPPLY-CHAIN MARKETPLACE",
+    image: medichain,
+    description:
+      "An AI-powered pharmaceutical marketplace and supply-chain verification platform connecting manufacturers, distributors, pharmacies, and customers. Features QR-based medicine tracking, a hash-chained ledger for custody verification and tamper detection, and AI-driven demand forecasting, inventory analysis, and anomaly detection to identify potential shortages and suspicious transactions.",
+    stack: ["React Native", "FastAPI", "PostgreSQL", "Supabase", "QR Code", "Docker"],
+    // demo: "https://resume-forge-ai-five.vercel.app/",
+    code: "https://github.com/ShanzayHussain/Medi-Chain",
+  },
+  {
+    title: "Aagahi",
+    tag: "AI-ASSISTED LEARNING PLATFORM FOR OLDER ADULTS",
+    image: aagahi,
+    description:
+      "A learning tool for older adults. It helps people understand bills and learn WhatsApp and Gmail tasks through plain-language explanations and step-by-step guidance. Aagahi teaches the user to act; it never pays bills, sends messages, or taps through an app for them.",
+    stack: ["React", "Vite", "Express", "Groq AI", "Gemini API"],
+    // demo: "https://resume-forge-ai-five.vercel.app/",
+    code: "https://github.com/ShanzayHussain/Aagahi",
+  },
 ];
+
+
 
 export default function Projects() {
   return (
@@ -104,7 +128,7 @@ export default function Projects() {
                 >
                   View project
                 </a>
-                {p.demo && (
+                {/* {p.demo && (
                   <a
                     href={p.demo}
                     target="_blank"
@@ -114,7 +138,7 @@ export default function Projects() {
                   >
                     Live Demo
                   </a>
-                )}
+                )} */}
               </div>
             </div>
           </motion.div>
